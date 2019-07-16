@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_PASSWORD: luizalabs
+      POSTGRES_USER: luizalabs
+    ports:
+      - "5432:5432"
