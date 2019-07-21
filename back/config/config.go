@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/crgimenes/goconfig"
 	"log"
+	_ "github.com/crgimenes/goconfig/yaml"
 )
 
 type Postgres struct {
@@ -14,8 +15,13 @@ type Postgres struct {
 	PoolSize int `yaml:"poolsize" cfgDefault:"30"`
 }
 
+type App struct {
+	Host string `yaml:"host" cfgDefault:":8080"`
+}
+
 type Config struct {
 	Postgres Postgres `yaml:"postgres"`
+	App App `yaml:"app"`
 }
 
 var configData Config
