@@ -8,3 +8,15 @@ services:
       POSTGRES_USER: luizalabs
     ports:
       - "5432:5432"
+
+  luizalabs-desafio:
+    image: jhonatamenezes/luizalabs-desafio
+    environment:
+      POSTGRES_HOST: postgres
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    links:
+      - postgres
+    depends_on:
+      - postgres
