@@ -7,11 +7,11 @@ jobs:
     docker:
       - image: golang:1.12
       - image: postgres:11-alpine
-          environment:
-            POSTGRES_PASSWORD: luizalabs
-            POSTGRES_USER: luizalabs
-          ports:
-            - "5432:5432"
+        environment:
+          POSTGRES_PASSWORD: luizalabs
+          POSTGRES_USER: luizalabs
+        ports:
+          - "5432:5432"
     steps:
       - prepare-and-run-tests
       - run:
