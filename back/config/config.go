@@ -21,6 +21,7 @@ type App struct {
 		Host string `yaml:"host" cfgDefault:":8001"`
 		Path string `yaml:"path" cfgDefault:"dist/"`
 	}
+	Origin string `yaml:"origin" cfgDefault:"http://localhost:8001"`
 }
 
 type Config struct {

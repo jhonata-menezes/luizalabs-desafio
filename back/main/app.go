@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:8001"},
+		AllowOrigins: strings.Split(config.GetConfig().App.Origin, ","),
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodDelete},
 	}))
 
