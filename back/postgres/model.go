@@ -1,6 +1,9 @@
 package postgres
 
 import (
+	"errors"
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -27,6 +30,19 @@ func (e *Employee) Insert() error {
 	e.Updated = time.Now()
 	return db.Insert(e)
 }
+
+func (e *Employee) Update() error {
+	db := GetConnection()
+	model :=new(Employee)
+	err := db.Model(model).Where("id = ?", e.Id).Select()
+	if err != nil {
+		return err
+	}
+	e.Created = model.Created
+	e.Updated = time.Now()
+	return db.Update(e)
+}
+
 func (e *Employee) Delete() error {
 	db := GetConnection()
 	return db.Delete(e)
@@ -35,8 +51,23 @@ func (e *Employee) Delete() error {
 func SelectEmployeeRest() (*[]EmployeeRest, error) {
 	db := GetConnection()
 	employee := new([]EmployeeRest)
-	_, err := db.Query(employee, "SELECT e.id, e.name, e.email, d.name as department from employee e INNER JOIN department d ON e.department=d.id")
+	_, err := db.Query(employee, "SELECT e.id, e.name, e.email, d.name as department from employee e INNER JOIN department d ON e.department=d.id order by e.id")
 	return employee, err
+}
+
+var reEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
+func (e *Employee) Validate() error {
+	if e.Department == 0 {
+		return errors.New("select one department")
+	}
+	if e.Name == "" || strings.TrimSpace(e.Name) == "" {
+		return errors.New("name is empty")
+	}
+	if !reEmail.MatchString(e.Email) {
+		return errors.New("e-mail invalid")
+	}
+	return nil
 }
 
 type Department struct {
@@ -57,7 +88,19 @@ func (e *Department) Insert() error {
 	return db.Insert(e)
 }
 
+func (e *Department) Update() error {
+	db := GetConnection()
+	return db.Update(e)
+}
+
 func (e *Department) Delete() error {
 	db := GetConnection()
 	return db.Delete(e)
+}
+
+func (d *Department) Validate() error {
+	if d.Name == "" || strings.TrimSpace(d.Name) == "" {
+		return errors.New("name is empty")
+	}
+	return nil
 }

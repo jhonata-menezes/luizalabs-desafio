@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func LoadRoutes(e *echo.Echo) {
@@ -40,11 +41,19 @@ func PUTEmployee (e echo.Context) error {
 	employee := new(postgres.Employee)
 	err := e.Bind(employee)
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, &ResponseDefault{"error", err.Error()})
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
 	}
-	err = employee.Insert()
+	employee.Email = strings.ToLower(employee.Email)
+	if err = employee.Validate(); err != nil {
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
+	}
+	if employee.Id == 0 {
+		err = employee.Insert()
+	} else {
+		err = employee.Update()
+	}
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, &ResponseDefault{"error", err.Error()})
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
 	}
 	return e.JSON(http.StatusOK, &ResponseDefault{
 		"ok", "inserted",
@@ -55,12 +64,12 @@ func DELETEEmployee (e echo.Context) error {
 	employee := new(postgres.Employee)
 	idParam, err := strconv.Atoi(e.Param("id"))
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, ResponseDefault{"error", "id is not integer"})
+		return e.JSON(http.StatusOK, ResponseDefault{"error", "id is not integer"})
 	}
 	employee.Id = int64(idParam)
 	err = employee.Delete()
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, ResponseDefault{"error", "employee not exist"})
+		return e.JSON(http.StatusOK, ResponseDefault{"error", "employee not exist"})
 	}
 	return e.JSON(http.StatusOK, ResponseDefault{"ok", "deleted"})
 }
@@ -82,11 +91,18 @@ func PUTDepartment (e echo.Context) error {
 	department := new(postgres.Department)
 	err := e.Bind(department)
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, &ResponseDefault{"error", err.Error()})
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
 	}
-	err = department.Insert()
+	if err = department.Validate(); err != nil {
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
+	}
+	if department.Id == 0 {
+		err = department.Insert()
+	} else {
+		err = department.Update()
+	}
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, &ResponseDefault{"error", err.Error()})
+		return e.JSON(http.StatusOK, &ResponseDefault{"error", err.Error()})
 	}
 	return e.JSON(http.StatusOK, &ResponseDefault{
 		"ok", "inserted",
@@ -102,7 +118,7 @@ func DELETEDepartment (e echo.Context) error {
 	department.Id = int64(idParam)
 	err = department.Delete()
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, ResponseDefault{"error", "can not delete"})
+		return e.JSON(http.StatusOK, ResponseDefault{"error", "can not delete"})
 	}
 	return e.JSON(http.StatusOK, ResponseDefault{"ok", "deleted"})
 }
