@@ -62,6 +62,7 @@ func PUTEmployee (e echo.Context) error {
 
 func DELETEEmployee (e echo.Context) error {
 	employee := new(postgres.Employee)
+	log.Println("param", e.Param("id"))
 	idParam, err := strconv.Atoi(e.Param("id"))
 	if err != nil {
 		return e.JSON(http.StatusOK, ResponseDefault{"error", "id is not integer"})
