@@ -4,7 +4,7 @@ ENV LANG C.UTF-8
 WORKDIR /luizalabs-desafio
 ENV API_URL=http://localhost:8000
 COPY front .
-RUN npm install --only=production
+RUN npm install
 # Build app
 RUN npm run build
 
