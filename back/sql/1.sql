@@ -1,6 +1,6 @@
 CREATE TABLE department(
     id serial PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE employee(
@@ -9,5 +9,5 @@ CREATE TABLE employee(
     email VARCHAR(255) NOT NULL,
     department INTEGER REFERENCES department(id),
     created TIMESTAMP NOT NULL,
-    updated TIMESTAMP NOT NULL,
+    updated TIMESTAMP NOT NULL
 );

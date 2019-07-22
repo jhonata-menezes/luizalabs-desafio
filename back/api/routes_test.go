@@ -15,7 +15,7 @@ import (
 
 var (
 	employeeBody = postgres.Employee{Name: "Vem Ser Feliz", Department: 1, Email: "vemserfeliz@luizalabs.com"}
-	employeeUpdateBody = postgres.Employee{Id: 1, Name: "Vem Ser Felizz", Department: 2, Email: "vemserfelizz@luizalabs.com"}
+	employeeUpdateBody = postgres.Employee{Id: 1, Name: "Vem Ser Felizz", Department: 1, Email: "vemserfelizz@luizalabs.com"}
 	employeeCreated = `{"status":"ok","message":"inserted"}` + "\n"
 	employeeDeleted = `{"status":"ok","message":"deleted"}` + "\n"
 )

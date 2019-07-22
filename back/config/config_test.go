@@ -4,7 +4,7 @@ import "testing"
 
 func TestConfig(t *testing.T) {
 	c := GetConfig()
-	if c.App.Host != ":8080" {
+	if c.App.Host != ":8000" {
 		t.Error("host changed", c.App.Host)
 	}
 
