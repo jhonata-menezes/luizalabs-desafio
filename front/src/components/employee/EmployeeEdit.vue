@@ -62,7 +62,7 @@
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-success" ref="btnSave"
-                            :disabled="!form.name || form.email.indexOf('@') === -1 || !form.department"
+                            :disabled="!form.name || (form.email && form.email.indexOf('@') === -1) || !form.department"
                             @click="addEmployee()">Save</button>
                 </div>
                 <div class="control">
