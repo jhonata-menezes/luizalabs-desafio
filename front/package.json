@@ -1,6 +1,6 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "luizalabs-desafio",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "PORT=8001 vue-cli-service serve",

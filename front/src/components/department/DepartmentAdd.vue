@@ -49,7 +49,7 @@
             addDepartment () {
                 let btn = this.$refs.btnSave
                 btn.classList.add('is-loading')
-                fetch('http://localhost:8000/department', {
+                fetch(`${process.env.VUE_APP_API_URL}/department`, {
                     method: 'put',
                     body: JSON.stringify(this.form),
                     headers: {

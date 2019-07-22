@@ -20,6 +20,15 @@ func main() {
 	}))
 
 	api.LoadRoutes(e)
+	go staticFolder()
 	log.Println("listening ", config.GetConfig().App.Host)
-	http.ListenAndServe(config.GetConfig().App.Host, e)
+	log.Fatalln(http.ListenAndServe(config.GetConfig().App.Host, e))
+}
+
+func staticFolder() {
+	c := config.GetConfig().App.Front
+	e := echo.New()
+	e.Static("/", c.Path)
+	log.Println("listening front ", c.Path)
+	log.Fatalln(http.ListenAndServe(c.Host, e))
 }

@@ -133,22 +133,18 @@ export default {
 
   methods: {
     getEmployees () {
-      fetch('http://localhost:8000/employee').then(response => {
+      fetch(`${process.env.VUE_APP_API_URL}/employee`).then(response => {
         if (response.status === 200) {
           response.json().then(data => this.employees = data)
         }
-      }).catch(err => {
-        console.log(err);
       })
     },
 
     deleteEmployee (id) {
-      fetch(`http://localhost:8000/employee/${id}`, {method: 'delete'}).then(response => {
+      fetch(`${process.env.VUE_APP_API_URL}/employee/${id}`, {method: 'delete'}).then(response => {
         if (response.status === 200) {
           this.getEmployees()
         }
-      }).catch(err => {
-        console.log(err);
       })
     },
 

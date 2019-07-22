@@ -16,7 +16,11 @@ type Postgres struct {
 }
 
 type App struct {
-	Host string `yaml:"host" cfgDefault:":8080"`
+	Host string `yaml:"host" cfgDefault:":8000"`
+	Front struct{
+		Host string `yaml:"host" cfgDefault:":8001"`
+		Path string `yaml:"path" cfgDefault:"dist/"`
+	}
 }
 
 type Config struct {

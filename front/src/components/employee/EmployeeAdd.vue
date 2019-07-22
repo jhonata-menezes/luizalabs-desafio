@@ -92,7 +92,7 @@ export default {
 
     methods: {
         getDepartments () {
-            fetch('http://localhost:8000/department').then(response => {
+            fetch(`${process.env.VUE_APP_API_URL}/department`).then(response => {
                 if (response.status === 200) {
                     response.json().then(data => this.departments = data)
                 } else if (response.status === 400) {
@@ -108,7 +108,7 @@ export default {
         addEmployee () {
             let btn = this.$refs.btnSave
             btn.classList.add('is-loading')
-            fetch('http://localhost:8000/employee', {
+            fetch(`${process.env.VUE_APP_API_URL}/employee`, {
                 method: 'put',
                 body: JSON.stringify(this.form),
                 headers: {
