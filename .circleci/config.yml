@@ -1,0 +1,47 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  tests-back:
+    docker:
+      - image: golang:1.12
+      - image: postgres:11-alpine
+          environment:
+            POSTGRES_PASSWORD: luizalabs
+            POSTGRES_USER: luizalabs
+          ports:
+            - "5432:5432"
+    steps:
+      - prepare-and-run-tests
+      - run:
+          name: Setup
+          command: |
+            psql -U luizalabs < back/sql/1.sql
+      - golang_tests
+      - run:
+          name: golang tests
+          command: |
+            cd back && go test ./...
+
+  tests-front:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - prepare
+      - run:
+          name: Setup
+          command: |
+            cd front && npm install
+      - run_tests
+      - run:
+          name: vuejs tests
+          command: |
+            cd front && npm run test:unit
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - tests-back
+      - tests-front
